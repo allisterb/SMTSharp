@@ -19,7 +19,7 @@ namespace SMT
 
         public static implicit operator Expression(Function<TArg1, TReturn> f)
         {
-            return f as Expression<Func<TArg1, TReturn>>;
+            return (Expression<Func<TArg1, TReturn>>) f;
         }
 
         public override string ToString()
@@ -31,16 +31,7 @@ namespace SMT
         }
     }
 
-    public class Function<T1, T2, T3> : Formula where T1 : Sort where T2 : Sort where T3 : Sort
-    {
-        public Function(string name) : base(name) { }
+    
 
-        public static implicit operator Expression(Function<T1, T2, T3> f)
-        {
-            Const<T1> p1 = new Const<T1>(f.Name + "_arg_1");
-            Const<T2> p2 = new Const<T2>(f.Name + "_arg_2");
-            Const<T3> r = new Const<T3>(f.Name + "_return");
-            return Expression.Lambda<Func<T1, T2, T3>>(r, f.Name, new ParameterExpression[] { (ParameterExpression) p1, (ParameterExpression) p2 });
-        }
-    }
+
 }

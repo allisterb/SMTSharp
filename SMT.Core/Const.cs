@@ -7,7 +7,7 @@ namespace SMT
     /// Abstracts an SMT formula constant
     /// </summary>
     /// <typeparam name="T">The sort or type of the constant term</typeparam>
-    public class Const<T> : Formula 
+    public class Const<T> : Formula where T : Sort
     {
         #region Constructor
         /// <summary>
