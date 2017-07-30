@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMT.Core", "SMT.Core\SMT.Core.csproj", "{788ADFB8-14F3-4BE7-8A43-A11495A0ADDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMT.Cli", "SMT.Cli\SMT.Cli.csproj", "{143CD6B6-B432-4D1A-A9E6-534611C306A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{788ADFB8-14F3-4BE7-8A43-A11495A0ADDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{788ADFB8-14F3-4BE7-8A43-A11495A0ADDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{788ADFB8-14F3-4BE7-8A43-A11495A0ADDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{143CD6B6-B432-4D1A-A9E6-534611C306A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{143CD6B6-B432-4D1A-A9E6-534611C306A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{143CD6B6-B432-4D1A-A9E6-534611C306A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{143CD6B6-B432-4D1A-A9E6-534611C306A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
