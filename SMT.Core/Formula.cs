@@ -10,7 +10,7 @@ namespace SMT
     public abstract class Formula
     {
         #region Constructor
-        internal Formula(string name)
+        internal Formula(string name, Theorem theorem)
         {
             Id = Guid.NewGuid().ToString("N");
             Type t = this.GetType();
@@ -18,18 +18,17 @@ namespace SMT
             {
                 this.Type = t.GenericTypeArguments[t.GenericTypeArguments.Length - 1];
             }
-            else
-            {
-                throw new InvalidOperationException("This type can only be used as a type parameter to a generic type.");
-            }
+            else Type = t;
             Name = name;
+            Theorem = theorem;
         }
         #endregion
 
         #region Properties
         public string Name { get; protected set; }
         public string Id { get; protected set; }
-        public Type Type { get; protected set; }   
+        public Type Type { get; protected set; }
+        public Theorem Theorem { get; protected set; }
         #endregion
     }
 }

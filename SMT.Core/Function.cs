@@ -7,12 +7,12 @@ namespace SMT
 {
     public class Function<TArg1, TReturn> : Formula where TArg1 : Sort where TReturn : Sort
     {
-        public Function(string name) : base(name) {}
+        public Function(string name, Theorem theorem) : base(name, theorem) {}
 
         public static explicit operator Expression<Func<TArg1, TReturn>>(Function<TArg1, TReturn> f)
         {
-            Const<TArg1> p = new Const<TArg1>(f.Name + "_arg_1");
-            Const<TReturn> r = new Const<TReturn>(f.Name + "_return");
+            Const<TArg1> p = new Const<TArg1>(f.Name + "_arg_1", f.Theorem);
+            Const<TReturn> r = new Const<TReturn>(f.Name + "_return", f.Theorem);
             return Expression.Lambda<Func<TArg1, TReturn>>(r, f.Name, new ParameterExpression[] { (ParameterExpression) p });
 
         }
