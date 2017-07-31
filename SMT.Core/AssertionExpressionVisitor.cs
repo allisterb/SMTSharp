@@ -29,17 +29,22 @@ namespace SMT
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
+            Context.Append("(");
             Visit(node.Left);
             Context.AppendFormat(" {0} ", GetExpressionTypeSymbol(node.NodeType));
             Visit(node.Right);
+            Context.Append(")");
             return node;
         }
 
 
         protected override Expression VisitUnary(UnaryExpression node)
         {
+            Context.Append("(");
             Context.AppendFormat("{0}", GetExpressionTypeSymbol(node.NodeType));
+            Context.Append(" ");
             Visit(node.Operand);
+            Context.Append(")");
             return node;
         }
 
@@ -53,7 +58,7 @@ namespace SMT
                 case ExpressionType.Or:
                     return "or";
                 case ExpressionType.Not:
-                    return "!";
+                    return "not";
                 default:
                     return type.ToString();
             }

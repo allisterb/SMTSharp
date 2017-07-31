@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,9 +17,9 @@ namespace SMT
             Type t = this.GetType();
             if (t.GenericTypeArguments.Length > 0)
             {
-                this.Type = t.GenericTypeArguments[t.GenericTypeArguments.Length - 1];
+                this.SortType = t.GenericTypeArguments[t.GenericTypeArguments.Length - 1];
             }
-            else Type = t;
+            else SortType = t;
             Name = name;
             Theorem = theorem;
         }
@@ -27,7 +28,7 @@ namespace SMT
         #region Properties
         public string Name { get; protected set; }
         public string Id { get; protected set; }
-        public Type Type { get; protected set; }
+        public Type SortType { get; protected set; }
         public Theorem Theorem { get; protected set; }
         #endregion
     }

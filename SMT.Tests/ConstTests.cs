@@ -20,14 +20,14 @@ namespace SMT.Tests
             Assert.NotEmpty(b);
             Assert.Equal(10, b.Length);
             Assert.Equal("b0", b[0].Name);
-            
+
         }
 
         [Fact]
         public void CanConvertToString()
         {
             Const<Bool> b = T.DeclareConst<Bool>("b");
-            Assert.Equal("decl-const b Bool", b.ToString());
+            Assert.Equal("(decl-const b Bool)", b.ToString());
         }
 
         [Fact]
@@ -36,10 +36,11 @@ namespace SMT.Tests
             Const<Bool> p = T.DeclareConst<Bool>("p");
             Const<Bool> q = T.DeclareConst<Bool>("q");
             Assertion a = T.Assert(p & !p);
-            Assert.Equal("p and !p", a.ToString());
+            Assert.Equal("(p and (not p))", a.ToString());
             a = T.Assert(p & (!p & p));
-            Assert.Equal("p and !p and p", a.ToString());
-
+            Assert.Equal("(p and ((not p) and p))", a.ToString());
+            a = T.Assert((!p & q) & p);
+            Assert.Equal("(((not p) and q) and p)", a.ToString());
         }
     }
 }

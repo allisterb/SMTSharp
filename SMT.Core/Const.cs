@@ -17,7 +17,7 @@ namespace SMT
         /// <param name="name"></param>
         public Const(string name, Theorem theorem) : base(name, theorem)
         {
-            
+
         }
         #endregion
 
@@ -45,14 +45,53 @@ namespace SMT
         public override string ToString()
         {
             Expression expr = this;
-            string[] t = this.Type.Name.Split('.');
-            return string.Format("decl-const {0} {1}", this.Name, t[t.Length - 1]);
+            string[] t = this.SortType.Name.Split('.');
+            return string.Format("(decl-const {0} {1})", this.Name, t[t.Length - 1]);
         }
         #endregion
 
-        #region Fields
+        #region Properties
+        protected static Type ClassType { get; } = typeof(Const<T>);
+        protected static MethodInfo DummyAnd0Method = ClassType.GetRuntimeMethod("DummyAnd0", new[] { typeof(T), typeof(T) });
+        protected static MethodInfo DummyAnd1Method = ClassType.GetRuntimeMethod("DummyAnd1", new[] { typeof(Boolean), typeof(T) });
+        protected static MethodInfo DummyAnd2Method = ClassType.GetRuntimeMethod("DummyAnd2", new[] { typeof(T), typeof(Boolean) });
+        protected static MethodInfo DummyOr0Method = ClassType.GetRuntimeMethod("DummyOr0", new[] { typeof(T), typeof(T) });
+        protected static MethodInfo DummyOr1Method = ClassType.GetRuntimeMethod("DummyOr1", new[] { typeof(Boolean), typeof(T) });
+        protected static MethodInfo DummyOr2Method = ClassType.GetRuntimeMethod("DummyOr2", new[] { typeof(T), typeof(Boolean) });
+        protected static MethodInfo DummyNotMethod = ClassType.GetRuntimeMethod("DummyNot", new[] { typeof(T) });
         #endregion
 
+        #region Methods
+        public static bool DummyAnd1(Boolean left, T right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool DummyAnd2(T left, Boolean right)
+        {
+            throw new NotImplementedException(); ;
+        }
+
+        public static bool DummyOr0(T left, T right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool DummyOr1(Boolean left, T right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool DummyOr2(T left, Boolean right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool DummyNot(T b)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         #region Operators
         public static implicit operator Expression(Const<T> c)
@@ -62,46 +101,37 @@ namespace SMT
 
         public static explicit operator ParameterExpression(Const<T> c)
         {
-            return Expression.Parameter(c.Type, c.Name);
+            return Expression.Parameter(c.SortType, c.Name);
         }
 
-        public static BinaryExpression operator & (Const<T> left, Expression right)
+        public static BinaryExpression operator & (Const<T> left, Const<T> right)
         {
-            Type t = typeof(Const<Bool>);
-            MethodInfo AndMethod = t.GetRuntimeMethod("DummyAnd2", new[] { typeof(Bool), typeof(Boolean) });
-            return Expression.MakeBinary(ExpressionType.And, left, right, false, AndMethod);
+            return Expression.MakeBinary(ExpressionType.And, left, right, false, DummyAnd0Method);
         }
 
         public static BinaryExpression operator & (Expression left, Const<T> right)
         {
-            Type t = typeof(Const<Bool>);
-            MethodInfo AndMethod = t.GetRuntimeMethod("DummyAnd1", new[] { typeof(Boolean), typeof(Bool) });
-            return Expression.MakeBinary(ExpressionType.And, left, right, false, AndMethod);
+            return Expression.MakeBinary(ExpressionType.And, left, right, false, DummyAnd1Method);
         }
 
-        public static bool DummyAnd1(Boolean left, Bool right)
+        public static BinaryExpression operator & (Const<T> left, Expression right)
         {
-            return false;
-        }
-
-        public static bool DummyAnd2(Bool left, Boolean right)
-        {
-            return false;
-        }
-
-        public static BinaryExpression operator | (Const<T> left, Expression right)
-        {
-            return Expression.MakeBinary(ExpressionType.Or, left, right);
+            return Expression.MakeBinary(ExpressionType.And, left, right, false, DummyAnd2Method);
         }
 
         public static BinaryExpression operator | (Expression left, Const<T> right)
         {
-            return Expression.MakeBinary(ExpressionType.Or, left, right);
+            return Expression.MakeBinary(ExpressionType.Or, left, right, false, DummyOr1Method);
+        }
+
+        public static BinaryExpression operator | (Const<T> left, Expression right)
+        {
+            return Expression.MakeBinary(ExpressionType.And, left, right, false, DummyOr2Method);
         }
 
         public static UnaryExpression operator ! (Const<T> c)
         {
-            return Expression.MakeUnary(ExpressionType.Not, c, c.Type);
+            return Expression.MakeUnary(ExpressionType.Not, c, c.SortType, DummyNotMethod);
         }
 
         public static BinaryExpression operator == (Expression left, Const<T> right)

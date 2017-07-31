@@ -11,6 +11,7 @@ namespace SMT
     {
         #region Properties
         Queue<Formula> Formulas = new Queue<Formula>();
+        static char IdentifierNameStart { get; } = 'a';
         #endregion
 
         #region Overriden methods

@@ -26,7 +26,7 @@ namespace SMT
         {
             Expression<Func<TArg1, TReturn>> e = (Expression<Func<TArg1, TReturn>>) this;
             StringBuilder s = new StringBuilder();
-            s.AppendFormat("declare-fun {0} ({1}) {2}", e.Name, e.Parameters[0].Type.Name, e.ReturnType.Name);
+            s.AppendFormat("(declare-fun {0} ({1}) {2})", e.Name, e.Parameters[0].Type.Name, e.ReturnType.Name);
             return s.ToString();
         }
     }
