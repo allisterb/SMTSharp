@@ -5,28 +5,21 @@ using System.Text;
 
 namespace SMT
 {
-    public class Function<TArg1, TReturn> : Formula where TArg1 : Sort where TReturn : Sort
+    public class Function<TArg1, TReturn> : Expression<TReturn> where TArg1 : Sort where TReturn : Sort
     {
-        public Function(string name, Theorem theorem) : base(name, theorem) {}
-
-        public static explicit operator Expression<Func<TArg1, TReturn>>(Function<TArg1, TReturn> f)
+        public Function(Theorem theorem, string name) : base(theorem)
         {
-            Const<TArg1> p = new Const<TArg1>(f.Name + "_arg_1", f.Theorem);
-            Const<TReturn> r = new Const<TReturn>(f.Name + "_return", f.Theorem);
-            return Expression.Lambda<Func<TArg1, TReturn>>(r, f.Name, new ParameterExpression[] { (ParameterExpression) p });
-
-        }
-
-        public static implicit operator Expression(Function<TArg1, TReturn> f)
-        {
-            return (Expression<Func<TArg1, TReturn>>) f;
+            Name = name;
+            Const<TArg1> p = new Const<TArg1>(Theorem, Name + "_arg_1");
+            Const<TReturn> r = new Const<TReturn>(Theorem, Name + "_return");
+            LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression)p });
         }
 
         public override string ToString()
         {
-            Expression<Func<TArg1, TReturn>> e = (Expression<Func<TArg1, TReturn>>) this;
+            LambdaExpression e = (LambdaExpression)LinqExpression;
             StringBuilder s = new StringBuilder();
-            s.AppendFormat("(declare-fun {0} ({1}) {2})", e.Name, e.Parameters[0].Type.Name, e.ReturnType.Name);
+            s.AppendFormat("(declare-fun {0} ({1}) {2})", Name, e.Parameters[0].Type.Name, e.ReturnType.Name);
             return s.ToString();
         }
     }

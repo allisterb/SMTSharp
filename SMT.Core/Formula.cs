@@ -1,35 +1,42 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace SMT
 {
-    /// <summary>
-    /// Abstracts an SMT-LIB expression formula
-    /// </summary>
-    public abstract class Formula
+    public class Formula : Expression<Bool>
     {
         #region Constructor
-        internal Formula(string name, Theorem theorem)
+        internal Formula(BooleanExpression e) : base(e)
         {
-            Id = Guid.NewGuid().ToString("N");
-            Type t = this.GetType();
-            if (t.GenericTypeArguments.Length > 0)
-            {
-                this.SortType = t.GenericTypeArguments[t.GenericTypeArguments.Length - 1];
-            }
-            else SortType = t;
-            Name = name;
-            Theorem = theorem;
+            this.LinqExpression = e.LinqExpression;
+        }
+
+        internal Formula(Formula f) : base(f)
+        {
+            this.LinqExpression = f.LinqExpression;
         }
         #endregion
 
-        #region Properties
-        public string Name { get; protected set; }
-        public string Id { get; protected set; }
-        public Type SortType { get; protected set; }
-        public Theorem Theorem { get; protected set; }
+        #region Overriden methods
+        public override bool Equals(object obj)
+        {
+            if (obj is Formula)
+            {
+                Formula f = obj as Formula;
+                return f.Id == this.Id;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
         #endregion
     }
 }

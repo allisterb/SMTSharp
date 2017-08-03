@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMT.Core", "SMT.Core\SMT.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMT.Cli", "SMT.Cli\SMT.Cli.csproj", "{143CD6B6-B432-4D1A-A9E6-534611C306A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMT.Tests", "SMT.Tests\SMT.Tests.csproj", "{1261AB18-19EB-4BB1-814A-880ABF892871}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMT.NET46", "SMT.NET46\SMT.NET46.csproj", "{D11205B9-3260-4859-856C-996341E99DBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMT.Tests", "SMT.Tests\SMT.Tests.csproj", "{1261AB18-19EB-4BB1-814A-880ABF892871}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{1261AB18-19EB-4BB1-814A-880ABF892871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1261AB18-19EB-4BB1-814A-880ABF892871}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1261AB18-19EB-4BB1-814A-880ABF892871}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D11205B9-3260-4859-856C-996341E99DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D11205B9-3260-4859-856C-996341E99DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D11205B9-3260-4859-856C-996341E99DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D11205B9-3260-4859-856C-996341E99DBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

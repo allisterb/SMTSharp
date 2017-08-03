@@ -5,4 +5,12 @@
     <RootNamespace>SMT</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="FunctionArity3.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="FunctionArity3.cs" />
+  </ItemGroup>
+
 </Project>

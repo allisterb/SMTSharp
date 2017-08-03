@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+
 using System.Text;
 
 namespace SMT
@@ -10,7 +11,7 @@ namespace SMT
     public class Theorem
     {
         #region Properties
-        Queue<Formula> Formulas = new Queue<Formula>();
+        Queue<ITerm> Terms = new Queue<ITerm>();
         static char IdentifierNameStart { get; } = 'a';
         #endregion
 
@@ -18,9 +19,9 @@ namespace SMT
         public override string ToString()
         {
             StringBuilder s = new StringBuilder();
-            foreach (Formula f in Formulas)
+            foreach (ITerm t in Terms)
             {
-                s.AppendLine(f.ToString());
+                s.AppendLine(t.ToString());
             }
             return s.ToString();
         }
@@ -29,63 +30,70 @@ namespace SMT
         #region Methods
         public Const<T> DeclareConst<T>(string name) where T : Sort
         {
-            Const<T> c = new Const<T>(name, this);
-            Append(c);
+            Const<T> c = new Const<T>(this, name);
+            Append<T>(c);
             return c;
         }
+
         public Const<T>[] DeclareConsts<T>(string baseName, int count) where T : Sort
         {
             int[] names = Enumerable.Range(0, count).ToArray();
             Const<T>[] r = new Const<T>[count];
             for (int n = 0; n < names.Length; n++)
             {
-                r[n] = new Const<T>(baseName + n.ToString(), this);
-                Append(r[n]);
+                r[n] = new Const<T>(this, baseName + n.ToString());
+                Append<T>(r[n]);
             }
             return r;
         }
 
         public Function<TArg1, TReturn> DeclareFunc<TArg1, TReturn>(string name) where TArg1 : Sort where TReturn : Sort
         {
-            Function<TArg1, TReturn> f = new Function<TArg1, TReturn>(name, this);
+            Function<TArg1, TReturn> f = new Function<TArg1, TReturn>(this, name);
             Append(f);
             return f;
         }
 
         public Function<TArg1, TArg2, TReturn> DeclareFunc<TArg1, TArg2, TReturn>(string name) where TArg1 : Sort where TArg2 : Sort where TReturn : Sort
         {
-            Function<TArg1, TArg2, TReturn> f = new Function<TArg1, TArg2, TReturn>(name, this);
+            Function<TArg1, TArg2, TReturn> f = new Function<TArg1, TArg2, TReturn>(this, name);
             Append(f);
             return f;
         }
 
+        /*
         public Function<TArg1, TArg2, TArg3, TReturn> DeclareFunc<TArg1, TArg2, TArg3, TReturn>(string name) where TArg1 : Sort where TArg2 : Sort where TArg3 : Sort where TReturn : Sort
         {
             Function<TArg1, TArg2, TArg3, TReturn> f = new Function<TArg1, TArg2, TArg3, TReturn>(name, this);
             Append(f);
             return f;
         }
+        */
 
-        public Assertion Assert(Expression e)
+        public Assertion Assert(ConstantExpression<Bool> b)
         {
-            Assertion a = new Assertion(e, GetNextAssertionName(), this);
+            Assertion a = new Assertion((BooleanExpression) b);
             Append(a);
             return a;
         }
 
-        protected string GetNextAssertionName()
+        public Assertion Assert(BinaryExpression<Bool> b)
         {
-            int i = Formulas.Where(fo => fo is Assertion).Count() + 1;
-            return string.Format("assert{0}", i);
+            Assertion a = new Assertion((BooleanExpression)b);
+            Append(a);
+            return a;
         }
 
-        protected void Append(Formula f)
+
+        protected string GetNextAssertionName()
         {
-#if NETSTANDARD1_6
-            Formulas.Append(f);
-#else
-            Formulas.Enqueue(f);
-#endif
+            int i = Terms.Where(fo => fo is Assertion).Count() + 1;
+            return string.Format("assert_{0}", i);
+        }
+
+        protected void Append<T>(Expression<T> t) where T : Sort
+        {
+            Terms.Enqueue(t);
         }
         #endregion
     }

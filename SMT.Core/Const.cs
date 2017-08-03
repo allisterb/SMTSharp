@@ -8,17 +8,18 @@ namespace SMT
     /// Abstracts an SMT formula constant
     /// </summary>
     /// <typeparam name="T">The sort or type of the constant term</typeparam>
-    public class Const<T> : Formula where T : Sort
+    public class Const<T> : Expression<T> where T : Sort
     {
         #region Constructor
-        /// <summary>
+        /// <summary>1
         /// Public constructor. Name is required.
         /// </summary>
         /// <param name="name"></param>
-        public Const(string name, Theorem theorem) : base(name, theorem)
+        public Const(Theorem theorem, string name) : base(theorem)
         {
-
+            Name = name;
         }
+        protected Const(Const<T> t) : base(t) {}
         #endregion
 
         #region Overriden methods
@@ -45,13 +46,12 @@ namespace SMT
         public override string ToString()
         {
             Expression expr = this;
-            string[] t = this.SortType.Name.Split('.');
+            string[] t = SortType.Name.Split('.');
             return string.Format("(decl-const {0} {1})", this.Name, t[t.Length - 1]);
         }
         #endregion
 
         #region Properties
-        protected static Type ClassType { get; } = typeof(Const<T>);
         protected static MethodInfo DummyAnd0Method = ClassType.GetRuntimeMethod("DummyAnd0", new[] { typeof(T), typeof(T) });
         protected static MethodInfo DummyAnd1Method = ClassType.GetRuntimeMethod("DummyAnd1", new[] { typeof(Boolean), typeof(T) });
         protected static MethodInfo DummyAnd2Method = ClassType.GetRuntimeMethod("DummyAnd2", new[] { typeof(T), typeof(Boolean) });
@@ -62,12 +62,21 @@ namespace SMT
         #endregion
 
         #region Methods
-        public static bool DummyAnd1(Boolean left, T right)
+        protected Const<T2> Reinterpret<T2>() where T2 : Sort
+        {
+            return new Const<T2>(this.Theorem, this.Name)
+            {
+                Id = this.Id,
+            };
+        }
+
+
+        public static bool DummyAnd1(Boolean left, Bool right)
         {
             throw new NotImplementedException();
         }
 
-        public static bool DummyAnd2(T left, Boolean right)
+        public static bool DummyAnd2(Bool left, Boolean right)
         {
             throw new NotImplementedException(); ;
         }
@@ -94,75 +103,12 @@ namespace SMT
         #endregion
 
         #region Operators
-        public static implicit operator Expression(Const<T> c)
+        public static implicit operator ConstantExpression<T>(Const<T> c)
         {
-            return (ParameterExpression) c;
+            return new ConstantExpression<T>(c);
         }
 
-        public static explicit operator ParameterExpression(Const<T> c)
-        {
-            return Expression.Parameter(c.SortType, c.Name);
-        }
-
-        public static BinaryExpression operator & (Const<T> left, Const<T> right)
-        {
-            return Expression.MakeBinary(ExpressionType.And, left, right, false, DummyAnd0Method);
-        }
-
-        public static BinaryExpression operator & (Expression left, Const<T> right)
-        {
-            return Expression.MakeBinary(ExpressionType.And, left, right, false, DummyAnd1Method);
-        }
-
-        public static BinaryExpression operator & (Const<T> left, Expression right)
-        {
-            return Expression.MakeBinary(ExpressionType.And, left, right, false, DummyAnd2Method);
-        }
-
-        public static BinaryExpression operator | (Expression left, Const<T> right)
-        {
-            return Expression.MakeBinary(ExpressionType.Or, left, right, false, DummyOr1Method);
-        }
-
-        public static BinaryExpression operator | (Const<T> left, Expression right)
-        {
-            return Expression.MakeBinary(ExpressionType.And, left, right, false, DummyOr2Method);
-        }
-
-        public static UnaryExpression operator ! (Const<T> c)
-        {
-            return Expression.MakeUnary(ExpressionType.Not, c, c.SortType, DummyNotMethod);
-        }
-
-        public static BinaryExpression operator == (Expression left, Const<T> right)
-        {
-            return Expression.MakeBinary(ExpressionType.Equal, left, right);
-        }
-
-        public static BinaryExpression operator == (Const<T> left, Expression right)
-        {
-            return Expression.MakeBinary(ExpressionType.Equal, left, right);
-        }
-
-        public static BinaryExpression operator != (Expression left, Const<T> right)
-        {
-            return Expression.MakeBinary(ExpressionType.NotEqual, left, right);
-        }
-
-        public static BinaryExpression operator != (Const<T> left, Expression right)
-        {
-            return Expression.MakeBinary(ExpressionType.NotEqual, left, right);
-        }
-
-        public static BinaryExpression operator < (Const<T> left, Const<T> right)
-        {
-            return Expression.MakeBinary(ExpressionType.LessThan, left, right);
-        }
-
-        public static BinaryExpression operator > (Const<T> left, Const<T> right)
-        {
-            return Expression.MakeBinary(ExpressionType.GreaterThan, left, right);
-        }
+       
         #endregion
     }
 }

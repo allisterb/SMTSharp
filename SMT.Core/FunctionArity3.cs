@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SMT
 {
-    public class Function<TArg1, TArg2, TArg3, TReturn> : Formula where TArg1 : Sort where TArg2 : Sort where TArg3 : Sort where TReturn : Sort
+    public class Function<TArg1, TArg2, TArg3, TReturn> : Term<TReturn> where TArg1 : Sort where TArg2 : Sort where TArg3 : Sort where TReturn : Sort
     {
         #region Constructors
         public Function(string name, Theorem theorem) : base(name, theorem) { }

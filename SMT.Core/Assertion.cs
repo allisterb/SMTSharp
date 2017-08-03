@@ -8,23 +8,20 @@ namespace SMT
     public class Assertion : Formula
     {
         #region Constructor
-        public Assertion(Expression expr, string name, Theorem theorem) : base(name, theorem)
+        internal Assertion(Formula f) : base(f)
         {
-            Expr = expr;
+            
         }
         #endregion
 
         #region Overriden methods
         public override string ToString()
         {
-            AssertionExpressionVisitor visitor = new AssertionExpressionVisitor();
-            visitor.Visit(Expr);
+            SMTExpressionVisitor visitor = new SMTExpressionVisitor();
+            visitor.Visit(LinqExpression);
             return visitor.GeneratedExpression;
         }
         #endregion
         
-        #region Properties
-        public Expression Expr { get; protected set; }
-        #endregion
     }
 }

@@ -6,13 +6,10 @@ using System.Text;
 
 namespace SMT
 {
-    internal class AssertionExpressionVisitor : ExpressionVisitor
+    internal class SMTExpressionVisitor : ExpressionVisitor
     {
         #region Constructors
-        internal AssertionExpressionVisitor() : base()
-        {
-
-        }
+        internal SMTExpressionVisitor() : base() {}
         #endregion
 
         protected override Expression VisitConstant(ConstantExpression node)

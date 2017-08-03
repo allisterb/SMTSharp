@@ -5,50 +5,23 @@ using System.Text;
 
 namespace SMT
 {
-    public class Function<TArg1, TArg2, TReturn> : Formula where TArg1 : Sort where TArg2 : Sort where TReturn : Sort
+    public class Function<TArg1, TArg2, TReturn> : Expression<TReturn> where TArg1 : Sort where TArg2: Sort where TReturn : Sort
     {
-        #region Constructors
-        public Function(string name, Theorem theorem) : base(name, theorem) { }
-        #endregion
+        public Function(Theorem theorem, string name) : base(theorem)
+        {
+            Name = name;
+            Const<TArg1> p1 = new Const<TArg1>(Theorem, Name + "_arg_1");
+            Const<TArg2> p2 = new Const<TArg2>(Theorem, Name + "_arg_2");
+            Const<TReturn> r = new Const<TReturn>(Theorem, Name + "_return");
+            LinqExpression = Expression.Lambda<Func<TArg1, TArg2, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression) p1, (ParameterExpression) p2 });
+        }
 
-        #region Overriden methods
         public override string ToString()
         {
-            Expression<Func<TArg1, TArg2, TReturn>> e = (Expression<Func<TArg1, TArg2, TReturn>>)this;
+            LambdaExpression e = (LambdaExpression)LinqExpression;
             StringBuilder s = new StringBuilder();
-            s.AppendFormat("declare-fun {0} ({1} {2}) {3}", e.Name, e.Parameters[0].Type.Name, e.Parameters[1].Type.Name, e.ReturnType.Name);
+            s.AppendFormat("(declare-fun {0} ({1}) {2})", Name, e.Parameters[0].Type.Name, e.Parameters[1].Type.Name, e.ReturnType.Name);
             return s.ToString();
         }
-        #endregion
-
-        #region Operators
-        public static UnaryExpression operator ~ (Function<TArg1, TArg2, TReturn> f)
-        {
-            return Expression.Negate(f);
-        }
-
-        public static BinaryExpression operator & (Function<TArg1, TArg2, TReturn> left, Function<TArg1, TArg2, TReturn> right)
-        {
-            return Expression.MakeBinary(ExpressionType.And, left, right);
-        }
-
-        public static BinaryExpression operator | (Function<TArg1, TArg2, TReturn> left, Function<TArg1, TArg2, TReturn> right)
-        {
-            return Expression.MakeBinary(ExpressionType.Or, left, right);
-        }
-
-        public static explicit operator Expression<Func<TArg1, TArg2, TReturn>>(Function<TArg1, TArg2, TReturn> f)
-        {
-            Const<TArg1> p1 = new Const<TArg1>(f.Name + "_arg_1", f.Theorem);
-            Const<TArg2> p2 = new Const<TArg2>(f.Name + "_arg_2", f.Theorem);
-            Const<TReturn> r = new Const<TReturn>(f.Name + "_return", f.Theorem);
-            return Expression.Lambda<Func<TArg1, TArg2, TReturn>>(r, f.Name, new ParameterExpression[] { (ParameterExpression)p1, (ParameterExpression)p2 });
-        }
-
-        public static implicit operator Expression(Function<TArg1, TArg2, TReturn> f)
-        {
-            return f as Expression<Func<TArg1, TArg2, TReturn>>;
-        }
-        #endregion
     }
 }

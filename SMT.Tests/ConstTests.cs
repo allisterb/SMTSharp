@@ -35,12 +35,13 @@ namespace SMT.Tests
         {
             Const<Bool> p = T.DeclareConst<Bool>("p");
             Const<Bool> q = T.DeclareConst<Bool>("q");
-            Assertion a = T.Assert(p & !p);
-            Assert.Equal("(p and (not p))", a.ToString());
-            a = T.Assert(p & (!p & p));
+            Assertion a = T.Assert(p * q);
+            Assert.Equal("p and q", a.ToString());
+            /*
             Assert.Equal("(p and ((not p) and p))", a.ToString());
             a = T.Assert((!p & q) & p);
             Assert.Equal("(((not p) and q) and p)", a.ToString());
+            */
         }
     }
 }
