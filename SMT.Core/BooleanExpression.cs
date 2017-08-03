@@ -15,13 +15,6 @@ namespace SMT
         }
         #endregion
 
-        #region Properties
-        #endregion
-
-        #region Methods
-
-        #endregion
-
         #region Operators
         public static implicit operator Formula(BooleanExpression e)
         {
@@ -46,8 +39,6 @@ namespace SMT
         {
             return new BooleanExpression(new BinaryExpression<Bool>(left.Theorem, ExpressionType.And, left, right));
         }
-
-
         #endregion
     }
 }

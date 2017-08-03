@@ -6,5 +6,6 @@ namespace SMT
 {
     public interface ITerm
     {
+        string Id { get; }
     }
 }

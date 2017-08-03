@@ -14,13 +14,8 @@ namespace SMT
 
         protected override Expression VisitConstant(ConstantExpression node)
         {
+           
             Context.AppendFormat("{0}", node.Value);
-            return node;
-        }
-
-        protected override Expression VisitParameter(ParameterExpression node)
-        {
-            Context.AppendFormat("{0}", node.Name);
             return node;
         }
 

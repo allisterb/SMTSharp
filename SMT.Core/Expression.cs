@@ -10,7 +10,7 @@ namespace SMT
     {
         #region Constructors
         internal Expression(Term<T> t) : base(t) {}
-        internal Expression(Theorem t) : base(t) {}
+        internal Expression(Theorem t, string name) : base(t, name) {}
         #endregion
 
         #region Properties

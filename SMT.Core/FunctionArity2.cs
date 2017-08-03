@@ -7,7 +7,7 @@ namespace SMT
 {
     public class Function<TArg1, TArg2, TReturn> : Expression<TReturn> where TArg1 : Sort where TArg2: Sort where TReturn : Sort
     {
-        public Function(Theorem theorem, string name) : base(theorem)
+        public Function(Theorem theorem, string name) : base(theorem, name)
         {
             Name = name;
             Const<TArg1> p1 = new Const<TArg1>(Theorem, Name + "_arg_1");

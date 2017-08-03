@@ -32,7 +32,6 @@ namespace SMT
         #endregion
 
         #region Properties
-        public static Type ClassType { get; } = typeof(Term<T>);
         public static Type SortType { get; } = typeof(T);
         public static string SortTypeName { get; } = SortType.Name;
         public string Name { get; protected set; }

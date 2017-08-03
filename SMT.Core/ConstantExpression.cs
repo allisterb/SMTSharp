@@ -7,9 +7,15 @@ namespace SMT
 {
     public class ConstantExpression<T> : Expression<T> where T : Sort
     {
-        public ConstantExpression(Term<T> t) : base(t)
+        #region Constructors
+        public ConstantExpression(Theorem t, string name) : base(t, name)
         {
-            LinqExpression = Expression.Constant(t, SortType);
+            LinqExpression = Expression.Constant(null, SortType);
         }
+        #endregion
+
+        #region Properties
+        public static Type ClassType { get; } = typeof(ConstantExpression<T>);
+        #endregion
     }
 }
