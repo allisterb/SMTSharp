@@ -10,8 +10,21 @@ namespace SMT.Tests
 {
     public class ConstTests
     {
-        Theorem T = new Theorem();
+        Theorem T;
+        Const<Bool> p;
+        Const<Bool> q;
+        Const<Bool> r;
+        Const<Bool> s;
 
+        public ConstTests()
+        {
+            T = new Theorem();
+            p = T.DeclareConst<Bool>("p");
+            q = T.DeclareConst<Bool>("q");
+            r = T.DeclareConst<Bool>("r");
+            s = T.DeclareConst<Bool>("s");
+        }
+ 
         [Fact]
         public void CanDeclareConsts()
         {
@@ -33,15 +46,18 @@ namespace SMT.Tests
         [Fact]
         public void CanAnd()
         {
-            Const<Bool> p = T.DeclareConst<Bool>("p");
-            Const<Bool> q = T.DeclareConst<Bool>("q");
-            Assertion a = T.Assert(p * q);
-            Assertion b = T.Assert(p * (p * p));
-            Assert.Equal("(p and q)", a.ToString());
-            Assert.Equal("(p and (p and p))", b.ToString());
-            //a = T.Assert((!p & q) & p);
-            //Assert.Equal("(((not p) and q) and p)", a.ToString());
             
+            Assert.Equal("(p and q)", T.Assert(p * q).ToString());
+            Assert.Equal("(p and (p and p))", T.Assert(p * (p * p)).ToString());
+            Assert.Equal("(p and (p and q))", T.Assert(p * (p * q)).ToString());
+        }
+
+        [Fact]
+        public void CanNot()
+        {
+            Assert.Equal("(not p)", T.Assert(-p).ToString());
+            Assert.Equal("((not p) and q)", T.Assert(-p * q).ToString());
+            Assert.Equal("(not (p and q))", T.Assert(-(p * q)).ToString());
         }
     }
 }

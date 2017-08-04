@@ -31,7 +31,7 @@ namespace SMT
         public Const<T> DeclareConst<T>(string name) where T : Sort
         {
             Const<T> c = new Const<T>(this, name);
-            Append<T>(c);
+            Append(c);
             return c;
         }
 
@@ -42,7 +42,7 @@ namespace SMT
             for (int n = 0; n < names.Length; n++)
             {
                 r[n] = new Const<T>(this, baseName + n.ToString());
-                Append<T>(r[n]);
+                Append(r[n]);
             }
             return r;
         }
@@ -73,6 +73,13 @@ namespace SMT
         public Assertion Assert(ConstantExpression<Bool> b)
         {
             Assertion a = new Assertion((BooleanExpression) b);
+            Append(a);
+            return a;
+        }
+
+        public Assertion Assert(UnaryExpression<Bool> b)
+        {
+            Assertion a = new Assertion((BooleanExpression)b);
             Append(a);
             return a;
         }

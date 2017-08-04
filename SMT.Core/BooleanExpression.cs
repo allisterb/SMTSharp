@@ -34,11 +34,6 @@ namespace SMT
         {
             return new BooleanExpression(e);
         }
-
-        public static BooleanExpression operator & (BooleanExpression left, Expression<Bool> right)
-        {
-            return new BooleanExpression(new BinaryExpression<Bool>(left.Theorem, ExpressionType.And, left, right));
-        }
         #endregion
     }
 }

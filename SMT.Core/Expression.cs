@@ -22,6 +22,10 @@ namespace SMT
         {
             return e.LinqExpression;
         }
+        public static UnaryExpression<T> operator - (Expression<T> left)
+        {
+            return new UnaryExpression<T>(left.Theorem, ExpressionType.Not, left);
+        }
 
         public static BinaryExpression<T> operator +(Expression<T> left, Expression<T> right)
         {

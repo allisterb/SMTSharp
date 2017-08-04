@@ -8,7 +8,7 @@ namespace SMT
     /// Abstracts an SMT formula constant
     /// </summary>
     /// <typeparam name="T">The sort or type of the constant term</typeparam>
-    public class Const<T> : Term<T> where T : Sort
+    public class Const<T> : ConstantExpression<T> where T : Sort
     {
         #region Constructor
         /// <summary>1
@@ -53,23 +53,6 @@ namespace SMT
             {
                 Id = this.Id,
             };
-        }
-        #endregion
-
-        #region Operators
-        public static implicit operator ConstantExpression<T>(Const<T> t)
-        {
-            return new ConstantExpression<T>(t.Theorem, t.Name);
-        }
-
-        public static BinaryExpression<T> operator +(Const<T> left, Const<T> right)
-        {
-            return new BinaryExpression<T>(left.Theorem, ExpressionType.Add, left, right); ;
-        }
-
-        public static BinaryExpression<T> operator *(Const<T> left, Const<T> right)
-        {
-            return new BinaryExpression<T>(left.Theorem, ExpressionType.Multiply, left, right); ;
         }
         #endregion
     }

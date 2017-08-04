@@ -40,9 +40,18 @@ namespace SMT
                     throw new ArgumentException($"Unknown expression type {et}");
             }
 
-            
-
         }
+        #endregion
+
+        #region Properties
+        public Expression<T> Term1;
+        public Expression<T> Term2;
+        public ExpressionType ExpressionType;
+        public static Type ClassType { get; } = typeof(BinaryExpression<T>);
+        protected static MethodInfo GenericDummyAndMethod { get; } = ClassType.GetRuntimeMethods().First(mi => mi.Name == "GenericDummyAnd");
+        protected static MethodInfo GenericDummyMulMethod { get; } = ClassType.GetRuntimeMethods().First(mi => mi.Name == "GenericDummyMul");
+        protected static MethodInfo GenericDummyOrMethod { get; } = ClassType.GetRuntimeMethods().First(mi => mi.Name == "GenericDummyOr");
+        protected static MethodInfo GenericDummyAddMethod { get; } = ClassType.GetRuntimeMethods().First(mi => mi.Name == "GenericDummyAdd");
         #endregion
 
         #region Methods
@@ -88,49 +97,14 @@ namespace SMT
         {
             return GenericDummyOrMethod.MakeGenericMethod(e, f);
         }
-
-
-        /*
-        public static bool DummyAndMethod2(Expression l, Expression right)
-        {
-            throw new NotImplementedException();
-        }
-
-  
-
-        public static int DummyMul(T left, T right)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static bool DummyAnd(T left, T right)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static int DummyAdd(T left, T right)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static bool DummyOr(T left, T right)
-        {
-            throw new NotImplementedException();
-        }
-        */
-
         #endregion
 
-        #region Properties
-        public static Type ClassType { get; } = typeof(BinaryExpression<T>);
-        protected static MethodInfo GenericDummyAndMethod { get; } = ClassType.GetRuntimeMethods().First(mi => mi.Name == "GenericDummyAnd");
-        protected static MethodInfo GenericDummyMulMethod { get; } = ClassType.GetRuntimeMethods().First(mi => mi.Name == "GenericDummyMul");
-        protected static MethodInfo GenericDummyOrMethod { get; } = ClassType.GetRuntimeMethods().First(mi => mi.Name == "GenericDummyOr");
-        protected static MethodInfo GenericDummyAddMethod { get; } = ClassType.GetRuntimeMethods().First(mi => mi.Name == "GenericDummyAdd");
-        public Expression<T> Term1;
-        public Expression<T> Term2;
-        public ExpressionType ExpressionType;
+        #region Operators
+        public static UnaryExpression<T> operator -(BinaryExpression<T> left)
+        {
+            return new UnaryExpression<T>(left.Theorem, ExpressionType.Not, left);
+        }
         #endregion
-
     }
+
 }
