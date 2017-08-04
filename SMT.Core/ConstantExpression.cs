@@ -10,12 +10,19 @@ namespace SMT
         #region Constructors
         public ConstantExpression(Theorem t, string name) : base(t, name)
         {
-            LinqExpression = Expression.Constant(null, SortType);
+            LinqExpression = Expression.Parameter(SortType, this.Name);
         }
         #endregion
 
         #region Properties
         public static Type ClassType { get; } = typeof(ConstantExpression<T>);
+        #endregion
+
+        #region Operators
+        public static explicit operator ParameterExpression(ConstantExpression<T> c)
+        {
+            return (ParameterExpression)c.LinqExpression;
+        }
         #endregion
     }
 }

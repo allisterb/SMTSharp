@@ -11,9 +11,9 @@ namespace SMT
         public Function(Theorem theorem, string name) : base(theorem, name)
         {
             Name = name;
-            Const<TArg1> p = new Const<TArg1>(Theorem, Name + "_arg_1");
-            Const<TReturn> r = new Const<TReturn>(Theorem, Name + "_return");
-            LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression)p });
+            ConstantExpression<TArg1> arg1 = new ConstantExpression<TArg1>(theorem, Name + "_arg_1");
+            ConstantExpression<TReturn> r = new Const<TReturn>(Theorem, Name + "_return");
+            LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression) arg1 });
         }
         #endregion
         
@@ -29,6 +29,8 @@ namespace SMT
 
         #region Properties
         public static Type ClassType { get; } = typeof(Function<TArg1, TReturn>);
+        public static Type Arg1Type { get; } = typeof(TArg1);
+        public static Type ReturnType { get; } = typeof(TReturn);
         #endregion
     }
 

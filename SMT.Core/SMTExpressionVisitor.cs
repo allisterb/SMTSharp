@@ -12,6 +12,12 @@ namespace SMT
         internal SMTExpressionVisitor() : base() {}
         #endregion
 
+        protected override Expression VisitParameter(ParameterExpression node)
+        {
+            Context.AppendFormat("{0}", node.Name);
+            return base.VisitParameter(node);
+        }
+  
         protected override Expression VisitConstant(ConstantExpression node)
         {
            

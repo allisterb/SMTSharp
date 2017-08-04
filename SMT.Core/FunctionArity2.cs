@@ -10,10 +10,10 @@ namespace SMT
         public Function(Theorem theorem, string name) : base(theorem, name)
         {
             Name = name;
-            Const<TArg1> p1 = new Const<TArg1>(Theorem, Name + "_arg_1");
-            Const<TArg2> p2 = new Const<TArg2>(Theorem, Name + "_arg_2");
-            Const<TReturn> r = new Const<TReturn>(Theorem, Name + "_return");
-            LinqExpression = Expression.Lambda<Func<TArg1, TArg2, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression) p1, (ParameterExpression) p2 });
+            ConstantExpression<TReturn> r = new ConstantExpression<TReturn>(Theorem, Name + "_return");
+            ConstantExpression<TArg1> arg1 = new ConstantExpression<TArg1>(theorem, Name + "_arg_1");
+            ConstantExpression<TArg1> arg2 = new ConstantExpression<TArg1>(theorem, Name + "_arg_2");
+            LinqExpression = Expression.Lambda<Func<TArg1, TArg2, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression) arg1, (ParameterExpression) arg2 });
         }
 
         public override string ToString()
@@ -23,5 +23,12 @@ namespace SMT
             s.AppendFormat("(declare-fun {0} ({1}) {2})", Name, e.Parameters[0].Type.Name, e.Parameters[1].Type.Name, e.ReturnType.Name);
             return s.ToString();
         }
+
+        #region Properties
+        public static Type ClassType { get; } = typeof(Function<TArg1, TArg2, TReturn>);
+        public static Type Arg1Type { get; } = typeof(TArg1);
+        public static Type Arg2Type { get; } = typeof(TArg1);
+        public static Type ReturnType { get; } = typeof(TReturn);
+        #endregion
     }
 }
