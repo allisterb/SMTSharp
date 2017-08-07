@@ -10,7 +10,7 @@ namespace SMT
     public class BinaryExpression<T> : Expression<T> where T : Sort
     {
         #region Constructors
-        internal BinaryExpression(Problem p, ExpressionType et, Expression<T> term1, Expression<T> term2) : base(p, $"binary_{et}_{term1.Name}_{term2.Name}")
+        internal BinaryExpression(Theory t, ExpressionType et, Expression<T> term1, Expression<T> term2) : base(t, $"binary_{et}_{term1.Name}_{term2.Name}")
         {
             Term1 = term1;
             Term2 = term2;
@@ -35,6 +35,9 @@ namespace SMT
                     {
                         LinqExpression = Expression.MakeBinary(ExpressionType.Add, term1, term2, false, GetDummyAddMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
                     }
+                    break;
+                case ExpressionType.Equal:
+                    LinqExpression = Expression.MakeBinary(ExpressionType.Equal, term1, term2, false, GetDummyAndMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
                     break;
                 default:
                     throw new ArgumentException($"Unknown expression type {et}");
@@ -102,7 +105,7 @@ namespace SMT
         #region Operators
         public static UnaryExpression<T> operator -(BinaryExpression<T> left)
         {
-            return new UnaryExpression<T>(left.Solution, ExpressionType.Not, left);
+            return new UnaryExpression<T>(left.Theory, ExpressionType.Not, left);
         }
         #endregion
     }

@@ -8,7 +8,7 @@ namespace SMT
     public class Function<TArg1, TArg2, TArg3, TReturn> : Expression<TReturn> where TArg1 : Sort where TArg2 : Sort where TArg3 : Sort where TReturn : Sort
     {
         #region Constructors
-        public Function(Problem problem, string name) : base(problem, name) { }
+        public Function(Theory theory, string name) : base(theory, name) { }
         #endregion
 
         #region Overriden methods

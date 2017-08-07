@@ -10,7 +10,7 @@ namespace SMT
     public class UnaryExpression<T> : Expression<T> where T : Sort
     {
         #region Constructors
-        public UnaryExpression(Problem t, ExpressionType et, Expression<T> term1) : base(t, $"unary_{et}_{term1.Name}")
+        public UnaryExpression(Theory t, ExpressionType et, Expression<T> term1) : base(t, $"unary_{et}_{term1.Name}")
         {
             Term1 = term1;
             switch (et)

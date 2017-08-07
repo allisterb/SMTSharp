@@ -71,6 +71,8 @@ namespace SMT
                     return "or";
                 case ExpressionType.Not:
                     return "not";
+                case ExpressionType.Equal:
+                    return "=";
                 default:
                     return type.ToString();
             }

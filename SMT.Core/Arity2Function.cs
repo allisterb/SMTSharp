@@ -7,12 +7,12 @@ namespace SMT
 {
     public class Function<TArg1, TArg2, TReturn> : Expression<TReturn> where TArg1 : Sort where TArg2: Sort where TReturn : Sort
     {
-        public Function(Problem solution, string name) : base(solution, name)
+        public Function(Theory theory, string name) : base(theory, name)
         {
             Name = name;
-            ConstantExpression<TReturn> r = new ConstantExpression<TReturn>(Solution, Name + "_return");
-            ConstantExpression<TArg1> arg1 = new ConstantExpression<TArg1>(Solution, Name + "_arg_1");
-            ConstantExpression<TArg1> arg2 = new ConstantExpression<TArg1>(Solution, Name + "_arg_2");
+            ConstantExpression<TReturn> r = new ConstantExpression<TReturn>(Theory, Name + "_return");
+            ConstantExpression<TArg1> arg1 = new ConstantExpression<TArg1>(Theory, Name + "_arg_1");
+            ConstantExpression<TArg1> arg2 = new ConstantExpression<TArg1>(Theory, Name + "_arg_2");
             LinqExpression = Expression.Lambda<Func<TArg1, TArg2, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression) arg1, (ParameterExpression) arg2 });
         }
 

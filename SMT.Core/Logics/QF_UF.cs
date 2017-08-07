@@ -6,6 +6,6 @@ namespace SMT.Logics
 {
     public static class QF_UF
     {
-        public static Theory<Bool> T1 = new Core() 
+        public static Theory T1 = new Core(); 
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SMT
 {
-    public class BooleanProblem : Problem<Core, Bool>
+    public class BooleanProblem : Core
     {
     }
 }

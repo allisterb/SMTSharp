@@ -8,10 +8,10 @@ namespace SMT
     public class Function<TArg1, TReturn> : Expression<TReturn> where TArg1 : Sort where TReturn : Sort
     {
         #region Constructors
-        internal Function(Problem problem, string name) : base(problem, name)
+        internal Function(Theory theory, string name) : base(theory, name)
         {
-            ConstantExpression<TArg1> arg1 = new ConstantExpression<TArg1>(Solution, Name + "_arg_1");
-            ConstantExpression<TReturn> r = new Const<TReturn>(Solution, Name + "_return");
+            ConstantExpression<TArg1> arg1 = new ConstantExpression<TArg1>(Theory, Name + "_arg_1");
+            ConstantExpression<TReturn> r = new Const<TReturn>(Theory, Name + "_return");
             LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression) arg1 });
         }
         #endregion

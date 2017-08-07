@@ -6,9 +6,9 @@ using System.Text;
 
 namespace SMT
 {
-    public abstract class Problem<TTheory, TSort> : Problem where TTheory : Theory<TSort> where TSort : Sort
+    public abstract class Theory<TSort> : Theory where TSort : Sort
     {
-        public Problem() : base() { }
+        public Theory() : base() { }
 
         #region Overriden methods
         public override string ToString()
@@ -54,38 +54,6 @@ namespace SMT
             Append(f);
             return f;
         }
-    }
-
-    public abstract class Problem
-    {
-        public Assertion Assert(ConstantExpression<Bool> b)
-        {
-            Assertion a = new Assertion((BooleanExpression)b);
-            Append(a);
-            return a;
-        }
-
-        public Assertion Assert(UnaryExpression<Bool> b)
-        {
-            Assertion a = new Assertion((BooleanExpression)b);
-            Append(a);
-            return a;
-        }
-
-        public Assertion Assert(BinaryExpression<Bool> b)
-        {
-            Assertion a = new Assertion((BooleanExpression)b);
-            Append(a);
-            return a;
-        }
-
-        protected void Append(ITerm t)
-        {
-            Terms.Enqueue(t);
-        }
-        #region Properties
-        protected Queue<ITerm> Terms = new Queue<ITerm>();
-        #endregion
 
     }
 }
