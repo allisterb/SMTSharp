@@ -6,8 +6,8 @@ namespace SMT.Cli
     {
         static void Main(string[] args)
         {
-            Theorem t = new Theorem();
-            Function<Bool, Bool> f = t.DeclareFunc<Bool, Bool>("f");
+            BooleanProblem p = new BooleanProblem();
+            Function<Bool, Bool> f = p.DeclareFunc<Bool, Bool>("f");
             Console.WriteLine(f.ToString());
         }
     }

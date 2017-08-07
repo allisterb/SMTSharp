@@ -10,7 +10,7 @@ namespace SMT
     {
         #region Constructors
         internal Expression(Term<T> t) : base(t) {}
-        internal Expression(Theorem t, string name) : base(t, name) {}
+        internal Expression(Problem p, string name) : base(p, name) {}
         #endregion
 
         #region Properties
@@ -24,17 +24,17 @@ namespace SMT
         }
         public static UnaryExpression<T> operator - (Expression<T> left)
         {
-            return new UnaryExpression<T>(left.Theorem, ExpressionType.Not, left);
+            return new UnaryExpression<T>(left.Solution, ExpressionType.Not, left);
         }
 
         public static BinaryExpression<T> operator +(Expression<T> left, Expression<T> right)
         {
-            return new BinaryExpression<T>(left.Theorem, ExpressionType.Add, left, right); ;
+            return new BinaryExpression<T>(left.Solution, ExpressionType.Add, left, right); ;
         }
 
         public static BinaryExpression<T> operator *(Expression<T> left, Expression<T> right)
         {
-            return new BinaryExpression<T>(left.Theorem, ExpressionType.Multiply, left, right); ;
+            return new BinaryExpression<T>(left.Solution, ExpressionType.Multiply, left, right); ;
         }
         #endregion
     }

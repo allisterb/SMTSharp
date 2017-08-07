@@ -8,7 +8,7 @@ namespace SMT
     public class ConstantExpression<T> : Expression<T> where T : Sort
     {
         #region Constructors
-        public ConstantExpression(Theorem t, string name) : base(t, name)
+        public ConstantExpression(Problem p, string name) : base(p, name)
         {
             LinqExpression = Expression.Parameter(SortType, this.Name);
         }

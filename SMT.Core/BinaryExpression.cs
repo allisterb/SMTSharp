@@ -10,7 +10,7 @@ namespace SMT
     public class BinaryExpression<T> : Expression<T> where T : Sort
     {
         #region Constructors
-        public BinaryExpression(Theorem t, ExpressionType et, Expression<T> term1, Expression<T> term2) : base(t, $"binary_{et}_{term1.Name}_{term2.Name}")
+        internal BinaryExpression(Problem p, ExpressionType et, Expression<T> term1, Expression<T> term2) : base(p, $"binary_{et}_{term1.Name}_{term2.Name}")
         {
             Term1 = term1;
             Term2 = term2;
@@ -102,7 +102,7 @@ namespace SMT
         #region Operators
         public static UnaryExpression<T> operator -(BinaryExpression<T> left)
         {
-            return new UnaryExpression<T>(left.Theorem, ExpressionType.Not, left);
+            return new UnaryExpression<T>(left.Solution, ExpressionType.Not, left);
         }
         #endregion
     }

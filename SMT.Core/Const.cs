@@ -15,7 +15,7 @@ namespace SMT
         /// Public constructor. Name is required.
         /// </summary>
         /// <param name="name"></param>
-        public Const(Theorem theorem, string name) : base(theorem, name) {}
+        public Const(Problem problem, string name) : base(problem, name) {}
         #endregion
 
         #region Overriden methods
@@ -49,7 +49,7 @@ namespace SMT
         #region Methods
         protected Const<T2> Reinterpret<T2>() where T2 : Sort
         {
-            return new Const<T2>(this.Theorem, this.Name)
+            return new Const<T2>(this.Solution, this.Name)
             {
                 Id = this.Id,
             };

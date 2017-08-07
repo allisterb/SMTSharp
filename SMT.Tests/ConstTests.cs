@@ -10,7 +10,7 @@ namespace SMT.Tests
 {
     public class ConstTests
     {
-        Theorem T;
+        BooleanProblem P;
         Const<Bool> p;
         Const<Bool> q;
         Const<Bool> r;
@@ -18,17 +18,18 @@ namespace SMT.Tests
 
         public ConstTests()
         {
-            T = new Theorem();
-            p = T.DeclareConst<Bool>("p");
-            q = T.DeclareConst<Bool>("q");
-            r = T.DeclareConst<Bool>("r");
-            s = T.DeclareConst<Bool>("s");
+            P = new BooleanProblem();
+            
+            p = P.DeclareConst("p");
+            q = P.DeclareConst("q");
+            r = P.DeclareConst("r");
+            s = P.DeclareConst("s");
         }
  
         [Fact]
         public void CanDeclareConsts()
         {
-            Const<Bool>[] b = T.DeclareConsts<Bool>("b", 10);
+            Const<Bool>[] b = P.DeclareConsts("b", 10);
             Assert.NotNull(b);
             Assert.NotEmpty(b);
             Assert.Equal(10, b.Length);
@@ -39,7 +40,7 @@ namespace SMT.Tests
         [Fact]
         public void CanConvertToString()
         {
-            Const<Bool> b = T.DeclareConst<Bool>("b");
+            Const<Bool> b = P.DeclareConst("b");
             Assert.Equal("(decl-const b Bool)", b.ToString());
         }
 
@@ -47,17 +48,17 @@ namespace SMT.Tests
         public void CanAnd()
         {
             
-            Assert.Equal("(p and q)", T.Assert(p * q).ToString());
-            Assert.Equal("(p and (p and p))", T.Assert(p * (p * p)).ToString());
-            Assert.Equal("(p and (p and q))", T.Assert(p * (p * q)).ToString());
+            Assert.Equal("(p and q)", P.Assert(p * q).ToString());
+            Assert.Equal("(p and (p and p))", P.Assert(p * (p * p)).ToString());
+            Assert.Equal("(p and (p and q))", P.Assert(p * (p * q)).ToString());
         }
 
         [Fact]
         public void CanNot()
         {
-            Assert.Equal("(not p)", T.Assert(-p).ToString());
-            Assert.Equal("((not p) and q)", T.Assert(-p * q).ToString());
-            Assert.Equal("(not (p and q))", T.Assert(-(p * q)).ToString());
+            Assert.Equal("(not p)", P.Assert(-p).ToString());
+            Assert.Equal("((not p) and q)", P.Assert(-p * q).ToString());
+            Assert.Equal("(not (p and q))", P.Assert(-(p * q)).ToString());
         }
     }
 }

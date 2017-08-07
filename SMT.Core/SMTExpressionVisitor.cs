@@ -12,6 +12,7 @@ namespace SMT
         internal SMTExpressionVisitor() : base() {}
         #endregion
 
+        #region Overriden methods 
         protected override Expression VisitParameter(ParameterExpression node)
         {
             Context.AppendFormat("{0}", node.Name);
@@ -46,6 +47,19 @@ namespace SMT
             return node;
         }
 
+        protected override Expression VisitLambda<T>(System.Linq.Expressions.Expression<T> node)
+        {
+            string[] t = node.ReturnType.ToString().Split('.');
+            if (node.Parameters.Count == 0)
+            {
+                Context.AppendFormat("(declare-fun {0} () {1})", node.Name, t[t.Length - 1]);
+            }
+            return node;
+        }
+
+        
+        #endregion
+
         #region Methods
         protected string GetExpressionTypeSymbol(ExpressionType type)
         {
@@ -62,7 +76,6 @@ namespace SMT
             }
         }
         #endregion
-
 
         #region Properties
         public string GeneratedExpression

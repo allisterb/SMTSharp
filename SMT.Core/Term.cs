@@ -12,22 +12,22 @@ namespace SMT
     public abstract class Term<T> : ITerm where T : Sort
     {
         #region Constructor
-        internal Term(Theorem theorem, string name) : this(theorem)
+        internal Term(Problem solution, string name) : this(solution)
         {
             Name = name;
         }
 
-        internal Term(Theorem theorem)
+        internal Term(Problem solution)
         {
             Id = Guid.NewGuid().ToString("N");
-            Theorem = theorem;
+            Solution = solution;
         }
 
         internal Term(Term<T> t)
         {
             this.Id = t.Id;
             this.Name = t.Name;
-            this.Theorem = t.Theorem;
+            this.Solution = t.Solution;
         }
         #endregion
 
@@ -36,7 +36,7 @@ namespace SMT
         public static string SortTypeName { get; } = SortType.Name;
         public string Name { get; protected set; }
         public string Id { get; protected set; }
-        public Theorem Theorem { get; protected set; }
+        public Problem Solution { get; protected set; }
         #endregion
      }
 }

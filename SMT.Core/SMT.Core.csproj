@@ -6,11 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="FunctionArity3.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="FunctionArity3.cs" />
+    <None Include="Arity3Function.cs" />
   </ItemGroup>
 
 </Project>
