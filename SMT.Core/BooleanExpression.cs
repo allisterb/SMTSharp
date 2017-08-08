@@ -34,6 +34,26 @@ namespace SMT
         {
             return new BooleanExpression(e);
         }
+
+        public static explicit operator BooleanExpression(Function<Bool> e)
+        {
+            return new BooleanExpression(e);
+        }
+
+        public static explicit operator BooleanExpression(Function<Bool, Bool> e)
+        {
+            return new BooleanExpression(e);
+        }
+
+        public static explicit operator BooleanExpression(Function<Bool, Bool, Bool> e)
+        {
+            return new BooleanExpression(e);
+        }
+
+        public static explicit operator BooleanExpression(Function<Bool, Bool, Bool, Bool> e)
+        {
+            return new BooleanExpression(e);
+        }
         #endregion
     }
 }

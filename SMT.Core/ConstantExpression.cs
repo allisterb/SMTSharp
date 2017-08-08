@@ -23,6 +23,11 @@ namespace SMT
         {
             return (ParameterExpression)c.LinqExpression;
         }
+
+        public static Function<T> operator *(Func<Function<T>> f, ConstantExpression<T> arg)
+        {
+            return f.Invoke();
+        }
         #endregion
     }
 }

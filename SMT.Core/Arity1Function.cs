@@ -10,9 +10,9 @@ namespace SMT
         #region Constructors
         internal Function(Theory theory, string name) : base(theory, name)
         {
-            ConstantExpression<TArg1> arg1 = new ConstantExpression<TArg1>(Theory, Name + "_arg_1");
-            ConstantExpression<TReturn> r = new Const<TReturn>(Theory, Name + "_return");
-            LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(r, Name, new ParameterExpression[] { (ParameterExpression) arg1 });
+            Return = new Const<TReturn>(Theory, Name);
+            Arg1 = new ConstantExpression<TArg1>(Theory, Name + "_arg_1");
+            LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(Return, Name, new ParameterExpression[] { (ParameterExpression) Arg1 });
         }
         #endregion
         
@@ -30,10 +30,37 @@ namespace SMT
         public static Type ClassType { get; } = typeof(Function<TArg1, TReturn>);
         public static Type Arg1Type { get; } = typeof(TArg1);
         public static Type ReturnType { get; } = typeof(TReturn);
+        public Const<TReturn> Return { get; set; }
+        protected ConstantExpression<TArg1> Arg1 { get; set; }
+        public Function<TArg1, TReturn> this[ConstantExpression<TArg1> arg]
+        {
+            get
+            {
+                Arg1 = arg;
+                LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(Return, Name, new ParameterExpression[] { (ParameterExpression)Arg1 });
+                return this;
+            }
+        }
+        #endregion
+
+        #region Methods
+        public Function<TArg1, TReturn> _ (ConstantExpression<TArg1> arg)
+        {
+            return this[arg];
+        }
+
+        public Func<Function<TArg1, TReturn>> Lambda()
+        {
+            return new Func<Function<TArg1, TReturn>>(() => this);
+        }
+        #endregion
+
+        #region Operators
+        public static Function<TArg1, TReturn> operator * (Function<TArg1, TReturn> f, ConstantExpression<TArg1> arg)
+        {
+            return f[arg];
+        }
         #endregion
     }
-
-    
-
 
 }

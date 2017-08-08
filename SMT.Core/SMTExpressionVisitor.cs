@@ -49,15 +49,17 @@ namespace SMT
 
         protected override Expression VisitLambda<T>(System.Linq.Expressions.Expression<T> node)
         {
-            string[] t = node.ReturnType.ToString().Split('.');
-            if (node.Parameters.Count == 0)
+            Context.Append(node.Name);
+            Context.Append("(");
+            foreach (ParameterExpression p in node.Parameters)
             {
-                Context.AppendFormat("(declare-fun {0} () {1})", node.Name, t[t.Length - 1]);
+                Visit(p);
+                Context.Append(" ");
             }
+            Context.Remove(Context.Length - 1, 1);
+            Context.Append(")");
             return node;
         }
-
-        
         #endregion
 
         #region Methods

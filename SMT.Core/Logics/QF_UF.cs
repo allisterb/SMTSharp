@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SMT.Logics
+namespace SMT
 {
-    public static class QF_UF
+    public class QF_UF : Theory
     {
-        public static Theory T1 = new Core(); 
+        public Theory Core = new Core();
+        
     }
 }
