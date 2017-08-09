@@ -17,7 +17,7 @@ namespace SMT
             {
                 case ExpressionType.Not:
                     LinqExpression = Expression.MakeUnary(et, Term1, Term1.LinqExpression.Type, GetDummyNotMethod(Term1.LinqExpression.Type));
-                    Name = $"!{Term1.Name}";
+                    Name = $"not({Term1.Name})";
                     break;
                 default:
                     throw new ArgumentException($"The expression type {et} is not supported as a unary expression.");

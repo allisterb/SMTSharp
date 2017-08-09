@@ -14,7 +14,7 @@ namespace SMT
             Arg1 = new ConstantExpression<TArg1>(Theory, Name + "_arg_1");
             Arg2 = new ConstantExpression<TArg2>(Theory, Name + "_arg_2");
             Arg3 = new ConstantExpression<TArg3>(Theory, Name + "_arg_3");
-            LinqExpression = Expression.Lambda<Func<TArg1, TArg2, TArg3, TReturn>>(Return, Name, new ParameterExpression[] { (ParameterExpression)Arg1, (ParameterExpression)Arg2, (ParameterExpression)Arg3 });
+            LinqExpression = Expression.Lambda(Return, Name, new ParameterExpression[] { (ParameterExpression)Arg1, (ParameterExpression)Arg2, (ParameterExpression)Arg3 });
         }
         #endregion
 
@@ -35,10 +35,10 @@ namespace SMT
         public static Type Arg3Type { get; } = typeof(TArg3);
         public static Type ReturnType { get; } = typeof(TReturn);
         public ConstantExpression<TReturn> Return { get; set; }
-        public ConstantExpression<TArg1> Arg1 { get; set; }
-        public ConstantExpression<TArg2> Arg2 { get; set; }
-        public ConstantExpression<TArg3> Arg3 { get; set; }
-        public Function<TArg1, TArg2, TArg3, TReturn> this[Tuple<ConstantExpression<TArg1>, ConstantExpression<TArg2>, ConstantExpression<TArg3>> arg]
+        public Expression<TArg1> Arg1 { get; set; }
+        public Expression<TArg2> Arg2 { get; set; }
+        public Expression<TArg3> Arg3 { get; set; }
+        public Function<TArg1, TArg2, TArg3, TReturn> this[Tuple<Expression<TArg1>, Expression<TArg2>, Expression<TArg3>> arg]
         {
             get
             {
@@ -51,7 +51,7 @@ namespace SMT
         #endregion
 
         #region Methods
-        public Function<TArg1, TArg2, TArg3, TReturn> _(Tuple<ConstantExpression<TArg1>, ConstantExpression<TArg2>, ConstantExpression<TArg3>> arg)
+        public Function<TArg1, TArg2, TArg3, TReturn> _(Tuple<Expression<TArg1>, Expression<TArg2>, Expression<TArg3>> arg)
         {
             return this[arg];
         }
@@ -63,7 +63,7 @@ namespace SMT
         #endregion
 
         #region Operators
-        public static Function<TArg1, TArg2, TArg3, TReturn> operator *(Function<TArg1, TArg2, TArg3, TReturn> f, Tuple<ConstantExpression<TArg1>, ConstantExpression<TArg2>, ConstantExpression<TArg3>> arg)
+        public static Function<TArg1, TArg2, TArg3, TReturn> operator *(Function<TArg1, TArg2, TArg3, TReturn> f, Tuple<Expression<TArg1>, Expression<TArg2>, Expression<TArg3>> arg)
         {
             return f[arg];
         }

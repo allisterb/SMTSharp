@@ -20,24 +20,26 @@ namespace SMT
                     if (SortTypeName == "Bool")
                     {
                         LinqExpression = Expression.MakeBinary(ExpressionType.And, term1, term2, false, GetDummyAndMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
+                        Name = $"{Term1.Name} and {Term2.Name}";
                     }
                     else
                     {
                         LinqExpression = Expression.MakeBinary(ExpressionType.Multiply, term2, term1, false, GetDummyMulMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
+                        Name = $"{Term1.Name} * {Term2.Name}";
                     }
-                    Name = $"{Term1.Name} * {Term2.Name}";
                     break;
                 case ExpressionType.Add:
                     if (SortTypeName == "Bool")
                     {
                         LinqExpression = Expression.MakeBinary(ExpressionType.Or, term1, term2, false, GetDummyOrMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
+                        Name = $"{Term1.Name} or {Term2.Name}";
                     }
                     else
                     {
                         LinqExpression = Expression.MakeBinary(ExpressionType.Add, term1, term2, false, GetDummyAddMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
+                        Name = $"{Term1.Name} + {Term2.Name}";
 
                     }
-                    Name = $"{Term1.Name} + {Term2.Name}";
                     break;
                 case ExpressionType.Equal:
                     LinqExpression = Expression.MakeBinary(ExpressionType.Equal, term1, term2, false, GetDummyAndMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));

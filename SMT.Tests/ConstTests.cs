@@ -51,6 +51,8 @@ namespace SMT.Tests
             Assert.Equal("(p and q)", P.Assert(p * q).ToString());
             Assert.Equal("(p and (p and p))", P.Assert(p * (p * p)).ToString());
             Assert.Equal("(p and (p and q))", P.Assert(p * (p * q)).ToString());
+            Assert.Equal("((p and q) and r)", P.Assert(p * q * r).ToString());
+            Assert.Equal("(p and (q and r))", P.Assert(p * (q * r)).ToString());
             Assert.Equal("(p = true)", P.Assert(p == Core.True).ToString());
         }
 

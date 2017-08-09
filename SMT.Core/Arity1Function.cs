@@ -44,7 +44,7 @@ namespace SMT
         #endregion
 
         #region Methods
-        public Function<TArg1, TReturn> _ (ConstantExpression<TArg1> arg)
+        public Function<TArg1, TReturn> _ (Expression<TArg1> arg)
         {
             return this[arg];
         }
@@ -53,9 +53,6 @@ namespace SMT
         {
             return new Func<Expression<TArg1>, Function<TArg1, TReturn>>((p) => this[p]);
         }
-        #endregion
-
-        #region Operators
         #endregion
     }
 

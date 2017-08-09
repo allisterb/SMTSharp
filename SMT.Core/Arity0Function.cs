@@ -10,8 +10,8 @@ namespace SMT
         #region Constructors
         public Function(Theory theory, string name) : base(theory, name)
         {
-            ConstantExpression<TReturn> r = new Const<TReturn>(Theory, Name);
-            LinqExpression = Expression.Lambda<Func<TReturn>>(r, Name, new ParameterExpression[0]);
+            Return = new ConstantExpression<TReturn>(Theory, Name);
+            LinqExpression = Expression.Lambda(Return, Name, new ParameterExpression[0]);
         }
         #endregion
 
@@ -28,6 +28,7 @@ namespace SMT
         #region Properties
         public static Type ClassType { get; } = typeof(Function<TReturn>);
         public static Type ReturnType { get; } = typeof(TReturn);
+        public ConstantExpression<TReturn> Return { get; }
         #endregion
 
         #region Methods

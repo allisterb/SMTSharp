@@ -30,9 +30,11 @@ namespace SMT.Tests
         }
 
         [Fact]
-        public void CanConstruct()
+        public void Arity1FunctionOperators()
         {
             Assert.Equal("f1(p)", P.Assert(f1[p]).ToString());
+            Assert.Equal("f1(p and q)", P.Assert(f1[p * q]).ToString());
+            Assert.Equal("f1(p and q and r)", P.Assert(f1[p * q * r]).ToString());
         }
 
         [Fact]
