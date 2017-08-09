@@ -10,9 +10,9 @@ namespace SMT
         #region Constructors
         internal Function(Theory theory, string name) : base(theory, name)
         {
-            Return = new Const<TReturn>(Theory, Name);
+            Return = new ConstantExpression<TReturn>(Theory, Name);
             Arg1 = new ConstantExpression<TArg1>(Theory, Name + "_arg_1");
-            LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(Return, Name, new ParameterExpression[] { (ParameterExpression) Arg1 });
+            LinqExpression = Expression.Lambda(Return, Name, new ParameterExpression[] { (ParameterExpression) Arg1 });
         }
         #endregion
         
@@ -30,14 +30,14 @@ namespace SMT
         public static Type ClassType { get; } = typeof(Function<TArg1, TReturn>);
         public static Type Arg1Type { get; } = typeof(TArg1);
         public static Type ReturnType { get; } = typeof(TReturn);
-        public Const<TReturn> Return { get; set; }
-        protected ConstantExpression<TArg1> Arg1 { get; set; }
-        public Function<TArg1, TReturn> this[ConstantExpression<TArg1> arg]
+        public ConstantExpression<TReturn> Return { get; set; }
+        protected Expression<TArg1> Arg1 { get; set; }
+        public Function<TArg1, TReturn> this[Expression<TArg1> arg]
         {
             get
             {
                 Arg1 = arg;
-                LinqExpression = Expression.Lambda<Func<TArg1, TReturn>>(Return, Name, new ParameterExpression[] { (ParameterExpression)Arg1 });
+                LinqExpression = Expression.Lambda(Return, Name, new ParameterExpression[] { (ParameterExpression)Arg1 });
                 return this;
             }
         }
@@ -49,17 +49,13 @@ namespace SMT
             return this[arg];
         }
 
-        public Func<Function<TArg1, TReturn>> Lambda()
+        public Func<Expression<TArg1>, Function<TArg1, TReturn>> Lambda()
         {
-            return new Func<Function<TArg1, TReturn>>(() => this);
+            return new Func<Expression<TArg1>, Function<TArg1, TReturn>>((p) => this[p]);
         }
         #endregion
 
         #region Operators
-        public static Function<TArg1, TReturn> operator * (Function<TArg1, TReturn> f, ConstantExpression<TArg1> arg)
-        {
-            return f[arg];
-        }
         #endregion
     }
 

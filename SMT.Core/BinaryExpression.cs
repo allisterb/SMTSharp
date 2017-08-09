@@ -25,6 +25,7 @@ namespace SMT
                     {
                         LinqExpression = Expression.MakeBinary(ExpressionType.Multiply, term2, term1, false, GetDummyMulMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
                     }
+                    Name = $"{Term1.Name} * {Term2.Name}";
                     break;
                 case ExpressionType.Add:
                     if (SortTypeName == "Bool")
@@ -34,10 +35,13 @@ namespace SMT
                     else
                     {
                         LinqExpression = Expression.MakeBinary(ExpressionType.Add, term1, term2, false, GetDummyAddMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
+
                     }
+                    Name = $"{Term1.Name} + {Term2.Name}";
                     break;
                 case ExpressionType.Equal:
                     LinqExpression = Expression.MakeBinary(ExpressionType.Equal, term1, term2, false, GetDummyAndMethod(term1.LinqExpression.Type, term2.LinqExpression.Type));
+                    Name = $"{Term1.Name} = {Term2.Name}";
                     break;
                 default:
                     throw new ArgumentException($"Unknown expression type {et}");
@@ -99,13 +103,6 @@ namespace SMT
         public static MethodInfo GetDummyOrMethod(Type e, Type f)
         {
             return GenericDummyOrMethod.MakeGenericMethod(e, f);
-        }
-        #endregion
-
-        #region Operators
-        public static UnaryExpression<T> operator -(BinaryExpression<T> left)
-        {
-            return new UnaryExpression<T>(left.Theory, ExpressionType.Not, left);
         }
         #endregion
     }

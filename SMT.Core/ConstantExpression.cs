@@ -17,17 +17,5 @@ namespace SMT
         #region Properties
         public static Type ClassType { get; } = typeof(ConstantExpression<T>);
         #endregion
-
-        #region Operators
-        public static explicit operator ParameterExpression(ConstantExpression<T> c)
-        {
-            return (ParameterExpression)c.LinqExpression;
-        }
-
-        public static Function<T> operator *(Func<Function<T>> f, ConstantExpression<T> arg)
-        {
-            return f.Invoke();
-        }
-        #endregion
     }
 }

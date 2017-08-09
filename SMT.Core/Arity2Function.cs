@@ -13,7 +13,7 @@ namespace SMT
             Return = new ConstantExpression<TReturn>(Theory, Name + "_return");
             Arg1 = new ConstantExpression<TArg1>(Theory, Name + "_arg_1");
             Arg2 = new ConstantExpression<TArg2>(Theory, Name + "_arg_2");
-            LinqExpression = Expression.Lambda<Func<TArg1, TArg2, TReturn>>(Return, Name, new ParameterExpression[] { (ParameterExpression) Arg1, (ParameterExpression) Arg2 });
+            LinqExpression = Expression.Lambda(Return, Name, new ParameterExpression[] { (ParameterExpression) Arg1, (ParameterExpression) Arg2 });
         }
         #endregion
 
@@ -33,35 +33,29 @@ namespace SMT
         public static Type Arg2Type { get; } = typeof(TArg2);
         public static Type ReturnType { get; } = typeof(TReturn);
         public ConstantExpression<TReturn> Return { get; set; }
-        public ConstantExpression<TArg1> Arg1 { get; set; }
-        public ConstantExpression<TArg2> Arg2 { get; set; }
-        public Function<TArg1, TArg2, TReturn> this[Tuple<ConstantExpression<TArg1>, ConstantExpression<TArg2>> arg]
+        public Expression<TArg1> Arg1 { get; set; }
+        public Expression<TArg2> Arg2 { get; set; }
+        public Function<TArg1, TArg2, TReturn> this[Tuple<Expression<TArg1>, Expression<TArg2>> arg]
         {
             get
             {
                 Arg1 = arg.Item1;
                 Arg2 = arg.Item2;
+                LinqExpression = Expression.Lambda(Return, Name, new ParameterExpression[] { (ParameterExpression)Arg1, (ParameterExpression)Arg2 });
                 return this;
             }
         }
         #endregion
 
         #region Methods
-        public Function<TArg1, TArg2, TReturn> _(Tuple<ConstantExpression<TArg1>, ConstantExpression<TArg2>> arg)
+        public Function<TArg1, TArg2, TReturn> _(Tuple<Expression<TArg1>, Expression<TArg2>> arg)
         {
             return this[arg];
         }
 
-        public Func<Function<TArg1, TArg2, TReturn>> Lambda()
+        public Func<Expression<TArg1>, Expression<TArg2>, Function<TArg1, TArg2, TReturn>> Lambda()
         {
-            return new Func<Function<TArg1, TArg2, TReturn>>(() => this);
-        }
-        #endregion
-
-        #region Operators
-        public static Function<TArg1, TArg2, TReturn> operator *(Function<TArg1, TArg2, TReturn> f, Tuple<ConstantExpression<TArg1>, ConstantExpression<TArg2>> arg)
-        {
-            return f[arg];
+            return new Func<Expression<TArg1>, Expression<TArg2>, Function<TArg1, TArg2, TReturn>>((p, q) => this[new Tuple<Expression<TArg1>, Expression<TArg2>>(p, q)]);
         }
         #endregion
     }

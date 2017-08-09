@@ -32,14 +32,25 @@ namespace SMT.Tests
         [Fact]
         public void CanConstruct()
         {
-            Assert.Equal("f1(p)", P.Assert(f1 * p).ToString());
+            Assert.Equal("f1(p)", P.Assert(f1[p]).ToString());
         }
+
+        [Fact]
+        public void CanConstructArity2()
+        {
+            var f2l = f2.Lambda();
+            Assert.Equal("f2(p q)", P.Assert(f2l(p, q)).ToString());
+        }
+
         [Fact]
         public void CandAnd()
         {
             Assert.Equal("(declare-fun f () Bool)", f.ToString());
             Assert.Equal("(f and p)", P.Assert(f * p).ToString());
-            Assert.Equal("f1(p) * q", P.Assert(f1 * p * q).ToString());
+            var fl = f1.Lambda();
+            Assert.Equal("f1(p)", P.Assert(fl(p)).ToString());
+            Assert.Equal("f1(p * q)", P.Assert(fl(p * q)).ToString());
+           
         }
 
     }

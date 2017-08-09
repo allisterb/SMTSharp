@@ -42,7 +42,13 @@ namespace SMT
         {
             return e.LinqExpression;
         }
-        public static UnaryExpression<T> operator - (Expression<T> left)
+
+        public static explicit operator ParameterExpression(Expression<T> b)
+        {
+            return Expression.Parameter(SortType, b.Name);
+        }
+
+        public static UnaryExpression<T> operator -(Expression<T> left)
         {
             return new UnaryExpression<T>(left.Theory, ExpressionType.Not, left);
         }
